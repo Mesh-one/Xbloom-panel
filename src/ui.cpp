@@ -647,7 +647,7 @@ void build_recipes_page(lv_obj_t *page) {
 // SETTINGS (third tab) + Wi-Fi, password and software-update screens
 // ============================================================================
 lv_obj_t *scr_wifi, *scr_pass, *scr_update;
-lv_obj_t *st_wifi_val, *st_ver_val, *st_machine_val, *sw_clock, *sw_night, *st_sync_val, *st_sleep_val, *st_ccolor_val;
+lv_obj_t *st_wifi_val, *st_ver_val, *st_machine_val, *sw_clock, *sw_night, *st_sync_val, *st_sync_btn, *st_sleep_dd, *st_ccolor_dd;
 void refresh_screen_prefs();
 void refresh_sync_row();
 lv_obj_t *wf_list, *wf_status_title, *wf_status_sub, *wf_forget, *wf_scan_lbl;
@@ -704,6 +704,38 @@ lv_obj_t *toggle(lv_obj_t *row_obj, bool on, lv_event_cb_t cb) {
   return s;
 }
 
+// A compact dark drop-down list on the right of a settings row.
+lv_obj_t *dropdown(lv_obj_t *row_obj, const char *options, lv_event_cb_t cb) {
+  lv_obj_t *d = lv_dropdown_create(row_obj);
+  lv_dropdown_set_options_static(d, options);
+  lv_obj_set_size(d, 140, 38);
+  lv_obj_align(d, LV_ALIGN_RIGHT_MID, -12, 0);
+  lv_obj_set_style_bg_color(d, hex(0x2C2C2E), 0);
+  lv_obj_set_style_bg_opa(d, LV_OPA_COVER, 0);
+  lv_obj_set_style_border_width(d, 0, 0);
+  lv_obj_set_style_radius(d, 10, 0);
+  lv_obj_set_style_text_color(d, hex(TEXT), 0);
+  lv_obj_set_style_text_font(d, &inter_16, 0);
+  lv_obj_set_style_pad_hor(d, 12, 0);
+  lv_obj_set_style_pad_ver(d, 9, 0);
+  lv_obj_set_style_text_font(d, &lv_font_montserrat_14, LV_PART_INDICATOR);  // the arrow is an icon glyph
+  lv_obj_set_style_text_color(d, hex(MUTED), LV_PART_INDICATOR);
+  lv_obj_t *l = lv_dropdown_get_list(d);
+  lv_obj_set_style_bg_color(l, hex(0x2C2C2E), 0);
+  lv_obj_set_style_border_width(l, 0, 0);
+  lv_obj_set_style_radius(l, 12, 0);
+  lv_obj_set_style_text_color(l, hex(TEXT), 0);
+  lv_obj_set_style_text_font(l, &inter_20, 0);
+  lv_obj_set_style_text_line_space(l, 18, 0);
+  lv_obj_set_style_pad_all(l, 10, 0);
+  lv_obj_set_style_max_height(l, 300, 0);
+  lv_obj_set_style_bg_color(l, hex(0x48484A), LV_PART_SELECTED | LV_STATE_CHECKED);
+  lv_obj_set_style_bg_color(l, hex(0x3A3A3C), LV_PART_SELECTED | LV_STATE_PRESSED);
+  lv_obj_set_style_text_color(l, hex(TEXT), LV_PART_SELECTED | LV_STATE_CHECKED);
+  lv_obj_add_event_cb(d, cb, LV_EVENT_VALUE_CHANGED, nullptr);
+  return d;
+}
+
 lv_obj_t *pill(lv_obj_t *parent, int x, int y, int w, int h, const char *label, uint32_t bg, uint32_t fg,
                lv_event_cb_t cb) {
   lv_obj_t *b = box(parent, x, y, w, h, bg, h / 2);
@@ -737,10 +769,14 @@ void build_settings_page(lv_obj_t *page) {
   row(c1, 0, rh, "Wi-Fi", &st_wifi_val, open_wifi);
   row(c1, 1, rh, "Software update", &st_ver_val, open_update);
   row(c1, 2, rh, "xBloom account", &st_acc_val, open_account);
-  row(c1, 3, rh, "Sync recipes", &st_sync_val, [](lv_event_t *) {
+  // Sync: a button on the right, the last sync time next to it
+  lv_obj_t *rs = row(c1, 3, rh, "Recipes", nullptr, nullptr);
+  st_sync_btn = pill(rs, cw - 16 - 120, (rh - 36) / 2, 120, 36, "Sync now", 0xFFFFFF, 0x000000, [](lv_event_t *) {
     if (cloud::state() == cloud::Acct::SignedIn) { cloud::sync_now(); refresh_sync_row(); }
     else open_account();
   });
+  st_sync_val = text(rs, "", &inter_16, hex(MUTED));
+  lv_obj_align(st_sync_val, LV_ALIGN_RIGHT_MID, -(16 + 120 + 12), 0);
   set_text(st_ver_val, FW_VERSION);
 
   lv_obj_t *c2 = section(page, "SCREEN", x2, y0, cw, 4, rh);
@@ -748,19 +784,14 @@ void build_settings_page(lv_obj_t *page) {
   sw_clock = toggle(r1, net::pref_clock(), [](lv_event_t *e) {
     net::set_pref_clock(lv_obj_has_state((lv_obj_t *)lv_event_get_target(e), LV_STATE_CHECKED));
   });
-  // tap to cycle: 1 / 3 / 5 / 10 min / Never
-  row(c2, 1, rh, "Sleep after", &st_sleep_val, [](lv_event_t *) {
+  lv_obj_t *rsl = row(c2, 1, rh, "Sleep after", nullptr, nullptr);
+  st_sleep_dd = dropdown(rsl, "1 min\n3 min\n5 min\n10 min\nNever", [](lv_event_t *e) {
     static const int opts[] = {1, 3, 5, 10, 0};
-    const int cur = net::pref_sleep_min();
-    int i = 0;
-    while (i < 5 && opts[i] != cur) ++i;
-    net::set_pref_sleep_min(opts[(i + 1) % 5]);
-    refresh_screen_prefs();
+    net::set_pref_sleep_min(opts[lv_dropdown_get_selected((lv_obj_t *)lv_event_get_target(e)) % 5]);
   });
-  // tap to cycle the clock colour
-  row(c2, 2, rh, "Clock colour", &st_ccolor_val, [](lv_event_t *) {
-    net::set_pref_clock_color((net::pref_clock_color() + 1) % 3);
-    refresh_screen_prefs();
+  lv_obj_t *rcc = row(c2, 2, rh, "Clock colour", nullptr, nullptr);
+  st_ccolor_dd = dropdown(rcc, "White\nBlue\nBrown", [](lv_event_t *e) {
+    net::set_pref_clock_color(lv_dropdown_get_selected((lv_obj_t *)lv_event_get_target(e)) % 3);
   });
   lv_obj_t *r2 = row(c2, 3, rh, "Off at night (11 PM-6 AM)", nullptr, nullptr);
   sw_night = toggle(r2, net::pref_night_off(), [](lv_event_t *e) {
@@ -775,19 +806,18 @@ void build_settings_page(lv_obj_t *page) {
 
 void format_clock(const struct tm &t, char *hm, size_t n);
 void refresh_screen_prefs() {
+  static const int opts[] = {1, 3, 5, 10, 0};
   const int m = net::pref_sleep_min();
-  char b[16];
-  if (m <= 0) strcpy(b, "Never"); else snprintf(b, sizeof b, "%d min", m);
-  set_text(st_sleep_val, b);
-  static const char *cn[] = {"White", "Blue", "Brown"};
-  set_text(st_ccolor_val, cn[net::pref_clock_color() % 3]);
+  for (int i = 0; i < 5; ++i)
+    if (opts[i] == m) lv_dropdown_set_selected(st_sleep_dd, i);
+  lv_dropdown_set_selected(st_ccolor_dd, net::pref_clock_color() % 3);
 }
 void refresh_sync_row() {
   if (!st_sync_val) return;
-  if (cloud::state() != cloud::Acct::SignedIn) { set_text(st_sync_val, "Sign in first"); return; }
+  if (cloud::state() != cloud::Acct::SignedIn) { set_text(st_sync_val, "Not signed in"); return; }
   if (cloud::busy()) { set_text(st_sync_val, "Syncing..."); return; }
   const time_t ls = cloud::last_sync();
-  if (!ls) { set_text(st_sync_val, "Tap to sync"); return; }
+  if (!ls) { set_text(st_sync_val, ""); return; }
   struct tm t;
   localtime_r(&ls, &t);
   char hm[12], b[24];
@@ -2533,6 +2563,7 @@ void sim_show(int which, int recipe) {
       water_ml = 0; weight_g = 0; brew_start_ms = millis(); intro_for = 0; refresh_detail(); brew_started(); break;
     }
     case 26: brew_ended(); break;
+    case 27: lv_screen_load(scr_home); set_tab(2); lv_dropdown_open(st_sleep_dd); break;
     case 22: dotfx::finish_play(lib[recipe].r.name, 141.3f, 220, 181000); break;
     case 23: clock_color = dotfx::WHITE; show_clock(true); break;
     case 24: clock_color = dotfx::BLUE; show_clock(true); break;

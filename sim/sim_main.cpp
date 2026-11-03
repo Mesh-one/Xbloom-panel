@@ -43,6 +43,13 @@ int main(int argc, char **argv) {
   lv_display_set_flush_cb(d, flush);
   lv_display_set_buffers(d, buf, nullptr, sizeof buf, LV_DISPLAY_RENDER_MODE_PARTIAL);
   ui::begin(); run(300); save("0_connecting.ppm");
+  if (argc > 1 && !strcmp(argv[1], "settings")) {
+    ev(UiEvType::Link, 3, 0, "XBLOOM 381"); run(500);
+    ui::sim_show(9, 0); run(800); save("st_settings.ppm");
+    ui::sim_show(27, 0); run(800); save("st_dropdown.ppm");
+    ui::sim_show(13, 0); run(400); save("st_clock.ppm");
+    return 0;
+  }
   if (argc > 1 && !strcmp(argv[1], "detail")) {
     ev(UiEvType::Link, 3, 0, "XBLOOM 381"); run(500);
     ui::sim_show(1, 0); run(800); save("d0_recipes.ppm");

@@ -182,7 +182,7 @@ lv_obj_t *clock_create(lv_obj_t *parent) {
   lv_obj_set_style_bg_color(bg, hexc(0x000000), 0);
   lv_obj_set_style_bg_opa(bg, LV_OPA_COVER, 0);
   lv_obj_remove_flag(bg, LV_OBJ_FLAG_SCROLLABLE);
-  ck.time.blink = true;
+  ck.time.blink = false;  // a steady colon: the clock only redraws when the minute changes
   ck.time.grid = 0.09f;
   ck.date.grid = 0.07f;
   ck.ft = field(bg, 0, 0, DotText::MAXC, DotText::ROWS, CK_PITCH, CK_R, text_fn, &ck.time, false);
@@ -191,6 +191,13 @@ lv_obj_t *clock_create(lv_obj_t *parent) {
 }
 
 void clock_set(lv_obj_t *, const char *hm, const char *date, uint32_t color) {
+  // Called several times a second while the clock shows: redraw only when something changed.
+  static char last_hm[16] = "", last_date[32] = "";
+  static uint32_t last_color = 0;
+  if (!strcmp(hm, last_hm) && !strcmp(date, last_date) && color == last_color) return;
+  strlcpy(last_hm, hm, sizeof last_hm);
+  strlcpy(last_date, date, sizeof last_date);
+  last_color = color;
   const int tc = layout(ck.time, hm), dc = layout(ck.date, date);
   Field *ft = field_of(ck.ft), *fd = field_of(ck.fd);
   ft->cols = tc;  fd->cols = dc;
@@ -504,13 +511,6 @@ void anim_tick(lv_timer_t *) {
     for (int i = 0; i < 3; ++i)
       for (int j = 0; j < 2; ++j)
         lv_obj_set_style_opa(fn_stats[i][j], (lv_opa_t)(smooth(1150 + i * 120, 1550 + i * 120, t) * 255), 0);
-  }
-  // the clock colon blinks
-  static uint32_t last_s = 0;
-  if (ck.ft && millis() / 1000 != last_s) {
-    last_s = millis() / 1000;
-    lv_obj_t *p = lv_obj_get_parent(ck.ft);
-    if (p && !lv_obj_has_flag(p, LV_OBJ_FLAG_HIDDEN)) lv_obj_invalidate(ck.ft);
   }
 }
 

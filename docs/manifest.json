@@ -1,0 +1,11 @@
+{
+  "name": "xBloom Panel",
+  "version": "3.3.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [{ "path": "firmware/xbloom-panel-3.3.0-full.bin", "offset": 0 }]
+    }
+  ]
+}

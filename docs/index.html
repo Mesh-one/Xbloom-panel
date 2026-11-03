@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>xBloom Panel – التثبيت</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/esp-web-tools@10.0.1/dist/web/install-button.js?module"></script>
+<style>
+  :root { --bg:#0b0b0c; --card:#161618; --line:#2a2a2d; --text:#f2f2f2; --sub:#a1a1a6; --brown:#c8925a; --blue:#3f9bff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:"IBM Plex Sans Arabic","Inter",system-ui,sans-serif; line-height:1.6; }
+  main { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+  .dots { display:grid; grid-template-columns:repeat(9,10px); gap:6px; margin-bottom:28px; }
+  .dots i { width:10px; height:10px; border-radius:50%; background:var(--brown); opacity:.25; }
+  .dots i.on { opacity:1; }
+  h1 { font-size: 40px; margin: 0 0 6px; letter-spacing:-.5px; }
+  .en { font-family:"Inter",system-ui,sans-serif; color:var(--sub); direction:ltr; text-align:right; }
+  p.lead { color:var(--sub); font-size:18px; margin:0 0 32px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px; margin-bottom:16px; }
+  .step { display:flex; gap:16px; align-items:flex-start; }
+  .num { flex:none; width:36px; height:36px; border-radius:50%; background:var(--text); color:#000; font-weight:700; display:grid; place-items:center; font-family:"Inter"; }
+  .step h2 { font-size:20px; margin:4px 0 4px; }
+  .step p { margin:0; color:var(--sub); }
+  esp-web-install-button { display:block; margin-top:16px; }
+  esp-web-install-button button, .btn { font:inherit; font-weight:700; font-size:18px; background:var(--text); color:#000; border:0; border-radius:999px; padding:16px 34px; cursor:pointer; }
+  .warn { color:#ffb27a; }
+  a { color:var(--blue); }
+  ul.feat { margin:0; padding-inline-start:20px; color:var(--sub); }
+  ul.feat li { margin:4px 0; }
+  footer { margin-top:40px; color:#6b6b70; font-size:14px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="dots" aria-hidden="true">
+    <i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i>
+  </div>
+  <h1>xBloom Panel</h1>
+  <p class="lead">شاشة لمس لمكينة xBloom Studio · تثبيت بضغطة زر<br><span class="en">Touchscreen for the xBloom Studio · one-click install</span></p>
+
+  <div class="card step"><div class="num">1</div><div>
+    <h2>الشاشة المطلوبة</h2>
+    <p>Elecrow CrowPanel Advance 4.3″ (ESP32-S3، 800×480). لازم «Advance» وليس الإصدار العادي 480×272.<br><a id="buy" href="https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html" target="_blank" rel="noopener">رابط الشراء ←</a></p>
+  </div></div>
+
+  <div class="card step"><div class="num">2</div><div>
+    <h2>وصّلها بالكمبيوتر</h2>
+    <p>بكيبل USB-C، وافتح هذي الصفحة في Chrome أو Edge على الكمبيوتر.</p>
+  </div></div>
+
+  <div class="card step"><div class="num">3</div><div>
+    <h2>اضغط تثبيت</h2>
+    <p>اختر منفذ الشاشة من القائمة، ووافق على المسح، وانتظر حتى ١٠٠٪ (حوالي دقيقتين).</p>
+    <esp-web-install-button manifest="manifest.json">
+      <button slot="activate">تثبيت · Install</button>
+      <span slot="unsupported" class="warn">المتصفح ما يدعم التثبيت. استخدم Chrome أو Edge على كمبيوتر.</span>
+      <span slot="not-allowed" class="warn">افتح الصفحة من رابط https.</span>
+    </esp-web-install-button>
+  </div></div>
+
+  <div class="card step"><div class="num">4</div><div>
+    <h2>الإعداد على الشاشة</h2>
+    <p>الإعدادات ← Wi-Fi، ثم الإعدادات ← حساب xBloom وسجّل بإيميلك. شغّل المكينة وتتصل بالبلوتوث لحالها.</p>
+  </div></div>
+
+  <div class="card">
+    <h2 style="margin-top:0">المميزات</h2>
+    <ul class="feat">
+      <li>وصفاتك من حساب xBloom على الشاشة، والتعديل يرجع للتطبيق</li>
+      <li>أنيميشن للصب يعرض كل صبّة: الحرارة، الموية، الوزن، والوقت</li>
+      <li>تحكم بالمطحنة والصب اليدوي والميزان</li>
+      <li>تعديل الوصفات من الشاشة</li>
+      <li>ساعة نقطية تختار لونها، وتختار متى تنطفي الشاشة</li>
+      <li>زر مزامنة الوصفات في الإعدادات</li>
+      <li>تحديثات عن طريق الواي فاي</li>
+    </ul>
+  </div>
+
+  <footer>
+    مشروع شخصي غير رسمي، وما له علاقة بشركة xBloom. يستخدم واجهة xBloom غير الرسمية، وممكن تتغير.<br>
+    <span class="en">Unofficial personal project, not affiliated with xBloom.</span><br>
+    <a href="https://github.com/Mesh-one/Xbloom-panel">الكود وملفات الطباعة على GitHub</a>
+  </footer>
+</main>
+</body>
+</html>

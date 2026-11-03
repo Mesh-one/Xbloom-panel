@@ -14,8 +14,8 @@ A touchscreen controller for the **xBloom Studio**, built on the Elecrow CrowPan
 | | |
 |---|---|
 | الشاشة | **Elecrow CrowPanel Advance 4.3″ HMI** (ESP32-S3، 800×480 IPS). لازم «Advance»، مو الإصدار العادي 480×272. ما تحتاج أي موديول إضافي. |
-| كيبل | USB-C للتثبيت والتشغيل، ويفضّل يكون بزاوية ٩٠° عشان يختفي خلف الشاشة |
-| الكيس (اختياري) | مشروع Bambu Studio جاهز في مجلد `case/` (`Xbloom_screen_case.3mf`، مضبوط على P2S). يفتح في Bambu Studio و OrcaSlicer و PrusaSlicer. اطبعه ABS أو ASA أو PETG |
+| كيبل | USB-C للتثبيت والتشغيل، ويفضّل يكون بزاوية ٩٠° عشان يختفي خلف الشاشة · [رابط الكيبل](https://amzn.eu/d/0hJzCoap) |
+| الكيس (اختياري) | ملف الطباعة في مجلد `case/` (`Xbloom_screen_case_v1.stl`، كل القطع في ملف واحد). يفتح في أي برنامج طباعة. اطبعه ABS أو ASA أو PETG |
 
 **رابط الشراء:** [AliExpress](https://a.aliexpress.com/_c3srIHtH) · أو [متجر Elecrow الرسمي](https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html)
 
@@ -46,7 +46,7 @@ A touchscreen controller for the **xBloom Studio**, built on the Elecrow CrowPan
 
 ## English
 
-**You need:** an Elecrow CrowPanel Advance 4.3″ HMI ([AliExpress](https://a.aliexpress.com/_c3srIHtH) or [Elecrow store](https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html)) (ESP32-S3, 800×480 IPS; the "Advance" model, not the 480×272 one) and a USB-C cable.
+**You need:** an Elecrow CrowPanel Advance 4.3″ HMI ([AliExpress](https://a.aliexpress.com/_c3srIHtH) or [Elecrow store](https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html)) (ESP32-S3, 800×480 IPS; the "Advance" model, not the 480×272 one) and a USB-C cable (a [90° one](https://amzn.eu/d/0hJzCoap) hides best behind the screen).
 
 **Install:** plug the panel into a computer, open **https://mesh-one.github.io/Xbloom-panel/** in Chrome or Edge, press **Install**, pick the panel's port, allow the erase, wait for 100%.
 
@@ -54,14 +54,14 @@ A touchscreen controller for the **xBloom Studio**, built on the Elecrow CrowPan
 
 **Features:** recipe sync with your xBloom account (both ways, plus a Sync button in Settings), live animated brewing screen, finish screen, grinder / manual pour / scale controls, recipe editor, dot-matrix idle clock (white / blue / brown), adjustable sleep time, auto-dim, over-the-air updates.
 
-**Case:** a ready Bambu Studio project in `case/Xbloom_screen_case.3mf` (set up for the P2S; also opens in OrcaSlicer and PrusaSlicer). The screen stands in the groove behind the brewer tower.
+**Case:** `case/Xbloom_screen_case_v1.stl`, all parts on one plate; opens in any slicer. The screen stands in the groove behind the brewer tower.
 
 **Build from source:** PlatformIO (`pio run`). The first build compiles ESP-IDF with the settings in `platformio.ini` (`custom_sdkconfig`), which takes a while.
 
 ## Files
 - `docs/` – the one-click installer page (GitHub Pages) and the full firmware image
 - `firmware/` – full image (USB, address 0x0) and the update image (Wi-Fi update page)
-- `case/` – Bambu Studio project (3MF) for the case
+- `case/` – the case (STL, all parts on one plate)
 - `src/`, `include/` – firmware source; `sim/` – desktop preview of the UI
 
 Licence: MIT (see `LICENSE`). Third-party code: see `THIRD_PARTY_NOTICES.md`.

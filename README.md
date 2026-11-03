@@ -17,7 +17,7 @@ A touchscreen controller for the **xBloom Studio**, built on the Elecrow CrowPan
 | كيبل | USB-C للتثبيت والتشغيل، ويفضّل يكون بزاوية ٩٠° عشان يختفي خلف الشاشة |
 | الكيس (اختياري) | مشروع Bambu Studio جاهز في مجلد `case/` (`Xbloom_screen_case.3mf`، مضبوط على P2S). يفتح في Bambu Studio و OrcaSlicer و PrusaSlicer. اطبعه ABS أو ASA أو PETG |
 
-**رابط الشراء:** [CrowPanel Advance 4.3″](https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html)
+**رابط الشراء:** [AliExpress](https://a.aliexpress.com/_c3srIHtH) · أو [متجر Elecrow الرسمي](https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html)
 
 ### التثبيت (بضغطة زر)
 1. وصّل الشاشة بالكمبيوتر بكيبل USB-C.
@@ -46,7 +46,7 @@ A touchscreen controller for the **xBloom Studio**, built on the Elecrow CrowPan
 
 ## English
 
-**You need:** an [Elecrow CrowPanel Advance 4.3″ HMI](https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html) (ESP32-S3, 800×480 IPS; the "Advance" model, not the 480×272 one) and a USB-C cable.
+**You need:** an Elecrow CrowPanel Advance 4.3″ HMI ([AliExpress](https://a.aliexpress.com/_c3srIHtH) or [Elecrow store](https://www.elecrow.com/crowpanel-advance-4-3-hmi-esp32-800x480-ai-display-ips-touch-artificial-intelligent-screen.html)) (ESP32-S3, 800×480 IPS; the "Advance" model, not the 480×272 one) and a USB-C cable.
 
 **Install:** plug the panel into a computer, open **https://mesh-one.github.io/Xbloom-panel/** in Chrome or Edge, press **Install**, pick the panel's port, allow the erase, wait for 100%.
 
